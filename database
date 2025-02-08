@@ -1,0 +1,73 @@
+create database toko_tanaman 
+
+CREATE TABLE karyawan (id_karyawan INT (5) NOT NULL AUTO_INCREMENT PRIMARY KEY, nama_karyawan VARCHAR (30) NOT NULL, jenis_kelamin VARCHAR (1) NOT NULL, 
+no_hp VARCHAR (12) NOT NULL, alamat VARCHAR (20) NOT NULL);
+
+CREATE TABLE pelanggan (id_pelanggan INT (5) NOT NULL AUTO_INCREMENT PRIMARY KEY, nama_pelanggan VARCHAR (30) NOT NULL, jenis_kelamin VARCHAR (1)
+NOT NULL, no_hp VARCHAR (12) NOT NULL, alamat VARCHAR (20) NOT NULL);
+
+CREATE TABLE barang (id_barang INT (5) NOT NULL AUTO_INCREMENT PRIMARY KEY, nama_barang VARCHAR (30) NOT NULL, deskripsi_brg VARCHAR (200)
+NOT NULL, harga VARCHAR (15) NOT NULL, stok INT (50) NOT NULL);
+
+CREATE TABLE pemesanan (id_pemesanan INT (5) NOT NULL AUTO_INCREMENT PRIMARY KEY, id_karyawan INT (5) NOT NULL,id_pelanggan INT (5) NOT NULL
+,id_barang INT (5) NOT NULL, jumlah INT (50) NOT NULL, total_bayar INT (50) NOT NULL, keterangan VARCHAR (100) NOT NULL, FOREIGN KEY (id_barang) REFERENCES barang (id_barang)
+,FOREIGN KEY (id_pelanggan) REFERENCES pelanggan (id_pelanggan), FOREIGN KEY (id_karyawan) REFERENCES karyawan (id_karyawan));
+
+CREATE TABLE detail_order (id_detail_order INT (5) NOT NULL AUTO_INCREMENT PRIMARY KEY, id_pemesanan INT
+(5) NOT NULL, tanggal_transaksi DATE NOT NULL, FOREIGN KEY (id_pemesanan) REFERENCES pemesanan (id_pemesanan));
+
+
+INSERT INTO karyawan (nama_karyawan, jenis_kelamin, no_hp, alamat) VALUES 
+('Siti Murni', 'P', '099876289826', 'Sampang'),
+('Putra Senja', 'L', '01937358398', 'Bangkalan'),
+('Satria Baja', 'L', '063897272819', 'Sumenep'),
+('Martia Junia', 'P', '019273839291', 'Bangkalan'),
+('Saiful Pratama', 'L', '028378273423', 'Pamekasan'),
+('Nur handayani', 'L', '090283928394', 'Sampang'),
+('Indah Dwi', 'P', '062532763833', 'Bangkalan'),
+('Jailani Dafid', 'L', '028738127383', 'Sumenep'),
+('Aliansyah', 'L', '081827182383', 'Sumenep'),
+('Andaini Putra', 'P', '019821982123', 'Pamekasan');
+
+INSERT INTO pelanggan (nama_pelanggan, jenis_kelamin, no_hp, alamat) VALUES
+('Alexander', 'L', '091383282328', 'Surabaya'),
+('Victoria', 'P', '036271827387', 'Sampang'),
+('Christopher', 'P', '062532763833', 'Bangkalan'),
+('Elizabeth', 'P', '019821982123', 'Pamekasan'),
+('Nathaniel', 'L', '028738127383', 'Sumenep'),
+('Gabrielle', 'L', '063897272819', 'Sumenep'),
+('Benjamin', 'L', '063897272819', 'Sumenep'),
+('Arabella', 'P', '019821982123', 'Pamekasan'),
+('Sebastian', 'P', '019273839291', 'Bangkalan'),
+('Anastasia', 'P', '062532763833', 'Bangkalan');
+
+INSERT INTO barang (nama_barang, deskripsi_brg, harga, stok) VALUES
+('Anggrek', 'tanaman hias yang berasal dari Asia Tenggara dan memiliki bunga yang indah dan harum', 'Rp. 20.000', 10),
+('Rose', 'tanaman bunga yang sangat populer dan biasa digunakan sebagai hadiah, bunga ini dikenal memiliki aroma yang harum', 'Rp. 30.000', 21),
+('Lavender', 'tumbuhan semak yang berasal dari wilayah Mediterania, dikenal dengan aroma wangi yang khas dan biasanya digunakan dalam produk perawatan tubuh', 'Rp. 30.000', 1),
+('Bunga Matahari', 'tanaman bunga yang berasal dari Amerika Utara, memiliki bunga berwarna kuning yang besar dan daun yang besar', 'Rp. 90.000', 10),
+('Mawar', 'tanaman bunga yang sangat populer dan biasa digunakan sebagai hadiah, bunga ini dikenal memiliki aroma yang harum', 'Rp. 40.000', 15),
+('Kaktus', 'tanaman sukulen yang biasa ditemukan di daerah yang kering dan gersang, memiliki duri sebagai pertahanan dari hewan pemakan tumbuhan', 'Rp. 100.000', 10),
+('Kamboja', 'tanaman hias yang berasal dari Asia Tenggara, memiliki bunga yang harum dan biasa digunakan sebagai dekorasi atau bahan parfum', 'Rp. 80.000', 12),
+('Bougainvillea', 'tanaman semak yang berasal dari Amerika Selatan, dikenal dengan bunga berwarna-warni yang tahan terhadap cuaca panas dan kering', 'Rp. 15.000', 30),
+('Pohon Beringin', 'jenis pohon besar yang biasa tumbuh di daerah tropis, memiliki akar yang lebar dan kuat', 'Rp. 70.000', 30),
+('Lily', 'tanaman bunga yang berasal dari belahan bumi utara, dikenal dengan bunga yang indah dan bermacam-macam warna', 'Rp. 54.000', 1);
+
+INSERT INTO pemesanan (id_karyawan, id_pelanggan, id_barang, jumlah, total_bayar, keterangan)
+SELECT 
+    (SELECT id_karyawan FROM karyawan ORDER BY RAND() LIMIT 1),
+    (SELECT id_pelanggan FROM pelanggan ORDER BY RAND() LIMIT 1),
+    (SELECT id_barang FROM barang ORDER BY RAND() LIMIT 1),
+    jumlah, 
+    total_bayar, 
+    keterangan
+FROM (SELECT 10 AS jumlah, 100000 AS total_bayar, 'Sudah termasuk Pajak' AS keterangan UNION ALL
+      SELECT 2, 50000, 'Sudah termasuk Pajak' UNION ALL
+      SELECT 10, 100000, 'Tidaktermasuk Pajak' UNION ALL
+      SELECT 10, 80000, 'Sudah termasuk Pajak' UNION ALL
+      SELECT 10, 90000, 'Sudah termasuk Pajak' UNION ALL
+      SELECT 10, 100000, 'Tidak termasuk Pajak' UNION ALL
+      SELECT 10, 50000, 'Sudah termasuk Pajak' UNION ALL
+      SELECT 10, 100000, 'Tidak termasuk Pajak' UNION ALL
+      SELECT 10, 90000, 'Sudah termasuk Pajak' UNION ALL
+      SELECT 10, 100000, 'Tidak termasuk Pajak') AS data_pemesanan;
