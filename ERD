@@ -1,0 +1,46 @@
+@startuml
+entity karyawan {
+  id_karyawan : int <pk>
+  nama_karyawan : varchar(30)
+  jenis_kelamin : varchar(1)
+  no_hp : varchar(12)
+  alamat : varchar(20)
+}
+
+entity pelanggan {
+  id_pelanggan : int <pk>
+  nama_pelanggan : varchar(30)
+  jenis_kelamin : varchar(1)
+  no_hp : varchar(12)
+  alamat : varchar(20)
+}
+
+entity barang {
+  id_barang : int <pk>
+  nama_barang : varchar(30)
+  deskripsi_brg : varchar(200)
+  harga : varchar(15)
+  stok : int(50)
+}
+
+entity pemesanan {
+  id_pemesanan : int <pk>
+  id_karyawan : int <fk>
+  id_pelanggan : int <fk>
+  id_barang : int <fk>
+  jumlah : int(50)
+  total_bayar : int(50)
+  keterangan : varchar(100)
+}
+
+entity detail_order {
+  id_detail_order : int <pk>
+  id_pemesanan : int <fk>
+  tanggal_transaksi : date
+}
+
+karyawan ||--o{ pemesanan : "melayani"
+pelanggan ||--o{ pemesanan : "melakukan"
+barang ||--o{ pemesanan : "terdapat dalam"
+pemesanan ||--o{ detail_order : "memiliki"
+@enduml
