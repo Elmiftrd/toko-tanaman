@@ -71,3 +71,19 @@ FROM (SELECT 10 AS jumlah, 100000 AS total_bayar, 'Sudah termasuk Pajak' AS kete
       SELECT 10, 100000, 'Tidak termasuk Pajak' UNION ALL
       SELECT 10, 90000, 'Sudah termasuk Pajak' UNION ALL
       SELECT 10, 100000, 'Tidak termasuk Pajak') AS data_pemesanan;
+
+INSERT INTO detail_order (id_pemesanan, tanggal_transaksi)
+SELECT 
+    (SELECT id_pemesanan FROM pemesanan ORDER BY RAND() LIMIT 1),
+    tanggal_transaksi
+FROM (SELECT '2022-04-01' AS tanggal_transaksi UNION ALL
+      SELECT '2023-08-11' UNION ALL
+      SELECT '2022-04-05' UNION ALL
+      SELECT '2023-04-07' UNION ALL
+      SELECT '2023-09-01' UNION ALL
+      SELECT '2021-10-09' UNION ALL
+      SELECT '2022-04-03' UNION ALL
+      SELECT '2022-03-01' UNION ALL
+      SELECT '2022-08-05' UNION ALL
+      SELECT '2022-04-01') AS data_transaksi;
+
