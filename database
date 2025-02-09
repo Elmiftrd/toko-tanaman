@@ -87,3 +87,6 @@ FROM (SELECT '2022-04-01' AS tanggal_transaksi UNION ALL
       SELECT '2022-08-05' UNION ALL
       SELECT '2022-04-01') AS data_transaksi;
 
+
+
+
