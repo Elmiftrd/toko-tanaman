@@ -1,0 +1,28 @@
+Menampilkan Data pemesanan dengan Nama Karyawan, Nama Pelanggan, dan Barang 
+SELECT p.id_pemesanan, k.nama_karyawan AS nama_karyawan, pl.nama_pelanggan AS 
+nama_pelanggan, b.nama_barang, p.jumlah, p.total_bayar, p.keterangan FROM 
+pemesanan p JOIN karyawan k ON p.id_karyawan = k.id_karyawan JOIN pelanggan pl ON 
+p.id_pelanggan = pl.id_pelanggan JOIN barang b ON p.id_barang = b.id_barang; 
+
+Jumlah pemesanan dan total pembayaran setiap pelanggan 
+SELECT pl.nama_pelanggan AS nama_pelanggan, COUNT(p.id_pemesanan) AS 
+jumlah_pemesanan, SUM(p.total_bayar) AS total_pembayaran FROM pemesanan p JOIN 
+pelanggan pl ON p.id_pelanggan = pl.id_pelanggan  
+GROUP BY p.id_pelanggan ORDER BY jumlah_pemesanan DESC; 
+
+Barang yang paling banyak dipesan 
+SELECT b.nama_barang, SUM(p.jumlah) AS total_terjual FROM pemesanan p JOIN barang 
+b ON p.id_barang = b.id_barang  
+GROUP BY p.id_barang  
+ORDER BY total_terjual DESC; 
+
+Total penjualan setiap karyawan 
+SELECT k.nama_karyawan AS nama_karyawan, SUM(p.total_bayar) AS total_penjualan 
+FROM pemesanan p JOIN karyawan k ON p.id_karyawan = k.id_karyawan GROUP BY 
+p.id_karyawan ORDER BY total_penjualan DESC; 
+
+Bulan dan tahun dengan transaksi tertinggi 
+SELECT YEAR(d.tanggal_transaksi) AS tahun, MONTH(d.tanggal_transaksi) AS bulan, 
+COUNT(d.id_pemesanan) AS jumlah_transaksi FROM detail_order d GROUP BY 
+YEAR(d.tanggal_transaksi), MONTH(d.tanggal_transaksi)  
+ORDER BY jumlah_transaksi DESC;
